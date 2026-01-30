@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AegisAI | AI Email Security</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/table.css') }}">
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">
+                <i data-lucide="shield-check" class="logo-icon"></i>
+                <span>AegisAI</span>
+            </div>
+            <nav>
+                <a href="#" class="nav-link active" onclick="showDashboard(event)"><i
+                        data-lucide="layout-dashboard"></i> Dashboard</a>
+                <a href="#" class="nav-link" onclick="showLoginLogs(event)"><i data-lucide="network"></i> Login Logs</a>
+                <a href="#" class="nav-link" onclick="showBankView(event)"><i data-lucide="landmark"></i> Bank
+                    Details</a>
+                <a href="#" class="nav-link" onclick="showAllEmails(event)"><i data-lucide="mail"></i> All Emails</a>
+                <a href="#" class="nav-link" onclick="showThreatLogs(event)"><i data-lucide="activity"></i> Threat
+                    Logs</a>
+                <a href="#" class="nav-link"><i data-lucide="settings"></i> Settings</a>
+            </nav>
+            <div class="user-profile">
+                <div class="avatar" id="user-avatar">U</div>
+                <div class="user-info">
+                    <span class="name" id="user-name">User Account</span>
+                    <span class="email" id="user-email">user@gmail.com</span>
+                </div>
+                <a href="/logout" class="logout-btn" title="Sign Out">
+                    <i data-lucide="log-out"></i>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header>
+                <h1>Security Dashboard</h1>
+                <div class="status-pill active-status">
+                    <span class="dot"></span> Real-time Monitoring Active
+                </div>
+            </header>
+
+            <!-- Status Widget -->
+            <section class="status-section">
+                <div class="card status-card">
+                    <div class="status-text">
+                        <h2>System Protected</h2>
+                        <p>Your inbox is being monitored. <span id="threat-count">0</span> high-risk threats detected.
+                        </p>
+                    </div>
+                    <div class="status-icon-large safe">
+                        <i data-lucide="check-circle-2"></i>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Dashboard View -->
+            <section class="feed-section" id="dashboard-view">
+                <!-- Urgent Section (Dashboard Cumulative) -->
+                <section id="urgent-section" class="urgent-section" style="display: none; margin-bottom: 2rem;">
+                    <div class="urgent-header">
+                        <i data-lucide="alert-triangle" style="color: var(--color-critical);"></i>
+                        <h3>Urgent - Action Required</h3>
+                    </div>
+                    <div id="urgent-container">
+                        <!-- Cumulative Urgent alerts (Email + Network + Bank) -->
+                    </div>
+                </section>
+
+                <h3>Recent Activity</h3>
+                <div class="email-list" id="email-list">
+                    <!-- Email Items injected here -->
+                    <div class="loading">Scanning inbox...</div>
+                </div>
+            </section>
+
+            <!-- Threat Logs Tab -->
+            <section class="feed-section" id="threat-logs-view" style="display: none;">
+                <h3>Threat Logs - Blocked Senders</h3>
+                <div class="blocked-list" id="blocked-list">
+                    <!-- Blocked senders injected here -->
+                    <div class="loading">Loading blocked senders...</div>
+                </div>
+            </section>
+
+            <!-- Login Logs Tab -->
+            <section class="feed-section" id="login-logs-view" style="display: none;">
+                <!-- Urgent Section (Login Specific) -->
+                <section id="urgent-section-login" class="urgent-section" style="display: none; margin-bottom: 2rem;">
+                    <div class="urgent-header">
+                        <i data-lucide="zap" style="color: var(--color-critical);"></i>
+                        <h3>Critical Login Threats</h3>
+                    </div>
+                    <div id="urgent-container-login">
+                        <!-- Login-specific alerts injected here -->
+                    </div>
+                </section>
+
+                <div class="section-header">
+                    <h3>Network Authentication Logs</h3>
+                    <button class="btn-secondary" onclick="fetchLoginLogs()">Refresh Data</button>
+                </div>
+
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Time</th>
+                            <th>IP Address</th>
+                            <th>Service</th>
+                            <th>State</th>
+                            <th>Classification</th>
+                            <th>Risk Score</th>
+                        </tr>
+                    </thead>
+                    <tbody id="login-logs-body">
+                        <!-- Login logs injected here -->
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Bank Transaction Tab -->
+            <section class="feed-section" id="bank-transactions-view" style="display: none;">
+                <!-- Urgent Section (Bank Specific) -->
+                <section id="urgent-section-bank" class="urgent-section" style="display: none; margin-bottom: 2rem;">
+                    <div class="urgent-header">
+                        <i data-lucide="landmark" style="color: var(--color-critical);"></i>
+                        <h3>Active Fraud Alerts</h3>
+                    </div>
+                    <div id="urgent-container-bank">
+                        <!-- Bank-specific alerts injected here -->
+                    </div>
+                </section>
+
+                <div class="section-header">
+                    <h3>Bank Transaction Details - Account: <span id="selected-account-id"
+                            style="color: var(--color-primary);">Loading...</span></h3>
+                    <button class="btn-secondary" onclick="fetchBankTransactions()">Refresh Records</button>
+                </div>
+
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Merchant</th>
+                            <th>Type</th>
+                            <th>Amount</th>
+                            <th>Location</th>
+                            <th>Legitimacy</th>
+                            <th>Score</th>
+                        </tr>
+                    </thead>
+                    <tbody id="bank-transactions-body">
+                        <!-- Transactions injected here -->
+                    </tbody>
+                </table>
+            </section>
+        </main>
+    </div>
+
+    <!-- Block Confirmation Modal -->
+    <div id="block-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <i data-lucide="alert-triangle" color="#ff6b6b"></i>
+                <h2>Confirm Block Action</h2>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to block this sender?</p>
+                <p class="modal-sender" id="modal-sender-info"></p>
+                <p class="modal-subject" id="modal-subject-info"></p>
+            </div>
+            <div class="modal-actions">
+                <button class="btn-secondary" onclick="closeBlockModal()">Cancel</button>
+                <button class="btn-danger" onclick="confirmBlock()">Block Sender</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+
+</html>

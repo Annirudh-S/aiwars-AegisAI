@@ -1,0 +1,20 @@
+{
+  "anirgotogame@gmail.com": {
+    "blocked_at": "2026-01-30T14:52:20.115585",
+    "reason": "Manually blocked (71% threat)",
+    "email_subject": "unusual payment",
+    "auto_blocked": false
+  },
+  "security-alert@google-support-team.com": {
+    "blocked_at": "2026-01-30T16:14:06.988693",
+    "reason": "Auto-blocked (92% threat)",
+    "email_subject": "Urgent: Your account password expires in 24h",
+    "auto_blocked": true
+  },
+  "anoojitz@gmail.com": {
+    "blocked_at": "2026-01-30T19:02:28.391279",
+    "reason": "Manually blocked (71% threat)",
+    "email_subject": "Unusual Sign-In",
+    "auto_blocked": false
+  }
+}

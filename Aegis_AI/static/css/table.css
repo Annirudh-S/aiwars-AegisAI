@@ -1,0 +1,45 @@
+/* CSS for Table inside Login Logs */
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+    font-size: 0.95rem;
+}
+
+.data-table th, .data-table td {
+    text-align: left;
+    padding: 12px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.data-table th {
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+.data-table tr:hover {
+    background-color: var(--bg-hover);
+}
+
+.risk-badge {
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    display: inline-block;
+}
+
+.risk-badge.normal {
+    background-color: #ecfdf5;
+    color: var(--color-safe);
+}
+
+.risk-badge.threat {
+    background-color: #fef2f2;
+    color: var(--color-critical);
+}
+
+.risk-badge.warning {
+    background-color: #fffbeb;
+    color: #eab308;
+}

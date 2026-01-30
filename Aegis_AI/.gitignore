@@ -1,0 +1,19 @@
+# Ignore sensitive credentials and tokens
+credentials.json
+token.json
+attacker_token.json
+api_key.txt
+
+# Python artifacts
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual environments
+venv/
+.venv/
+venv_new/
+
+# OS files
+.DS_Store
+Thumbs.db

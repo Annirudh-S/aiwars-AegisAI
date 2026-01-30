@@ -1,0 +1,3 @@
+{
+  "note": "Example attacker_token.json — replace with a real token if you need the attacker module to authenticate. Do NOT commit real tokens to public repos."
+}
