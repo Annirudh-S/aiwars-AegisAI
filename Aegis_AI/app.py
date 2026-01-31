@@ -18,8 +18,7 @@ from money_engine import money_engine # Import Login Threat Engine
 app = Flask(__name__)
 # Use environment variable for the Flask secret key. Replace the placeholder or set FLASK_SECRET_KEY in your environment.
 app.secret_key = os.environ.get('FLASK_SECRET_KEY', 'PASTE_YOUR_FLASK_SECRET_KEY_HERE')  # Set FLASK_SECRET_KEY env var or replace placeholder
-# No explicit training needed for LLM
-login_engine.train() # Train Login Threat Model
+login_engine.train() 
 
 LOGIN_LOGS_FILE = 'login_attempts.json'
 
@@ -33,7 +32,7 @@ def log_login_attempt(username, status, ip_address):
         except:
             logs = []
     
-    # Count previous attempts for this IP in the last 24 hours (simplified)
+    
     attempts_count = sum(1 for log in logs if log['ip'] == ip_address) + 1
     
     new_log = {
@@ -60,7 +59,7 @@ def login_required(f):
         return f(*args, **kwargs)
     return decorated_function
 
-# Blocked senders storage
+#
 BLOCKED_SENDERS_FILE = 'blocked_senders.json'
 
 def load_blocked_senders():
@@ -89,8 +88,7 @@ def extract_email_address(sender):
 
 
 
-# If modifying these scopes, delete the file token.json.
-# If modifying these scopes, delete the file token.json.
+
 SCOPES = [
     'https://www.googleapis.com/auth/gmail.modify',
     'https://www.googleapis.com/auth/userinfo.profile',
